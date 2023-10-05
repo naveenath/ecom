@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{% if category %}
+{{ category.description|truncatewords:155 }}
+{%  else %}
+<b>Welcome to ABC store where you can buy anything</b>
+{% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+{{category.name}}-ABC Store
+{% else %}
+
+{%  endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<!--{% if category %}-->
+<!--&lt;!&ndash;<div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="row my_row_class">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="mx-auto">&ndash;&gt;-->
+<!--&lt;!&ndash;            <p><a href="{% url 'shop:allProdCat' %}">Our Product Collection</a></p>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--{% endif  %}-->
+<div class="mx-auto">
+    {% if category %}
+    <h1 class="text-center my_title" style="font-size:25px;"><b>{{category.name}}</b></h1>
+    <center><img class="my_image" src="{{category.image.url}}" alt="{{category.name}}"></center>
+</div>
+<br>
+<div>
+
+    <p class="text-justify"><b>{{category.description}}</b></p>
+</div>
+{% else %}
+<!--<div>-->
+<!--  <img src="{% static 'img/banner.png' %}" alt="ourproduct">-->
+<!--</div>-->
+<br>
+<div>
+    <h1 class="my_title"> Our Product Collections</h1>
+    <p class="text-justify">Fruits, nuts, and vegetables play a significant role in human nutrition, especially as sources of vitamins (C, A, B6 , thiamine, niacin, E), minerals, and dietary fiber (Quebedeaux and Bliss, 1988; Quebedeaux and Eisa, 1990; Wargovich, 2000). Their contribution as a group is estimated at 91%
+        of vitamin C, 48% of vitamin A,
+        27% of vitamin B6
+        , 17% of thiamine, and 15% of niacin in the U.S.
+        diet. Fruits and vegetables also
+        supply 16% of magnesium, 19% of
+        iron, and 9% of the calories.
+        Legume vegetables, potatoes, and
+        tree nuts (such as almond, filbert,
+        pecan, pistachio, and walnut)
+        contribute about 5% of the per
+        capita availability of proteins in the
+        U.S. diet, and their proteins are of
+        high quality as to their content of
+        essential amino acids. Nuts are a
+        good source of essential fatty acids,
+        fiber, vitamin E, and minerals. Other
+        important nutrients supplied by fruits
+        and vegetables include folacin,
+        riboflavin, zinc, calcium, potassium,
+        and phosphorus.</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-3 col-sm-3 col-md-3 col-lg-3 " style="p">
+            <div class="card text-center" style="min-width:10rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}"
+                                                   alt="{{product.name}}"></a>
+            </div>
+            <div class="card-body">
+                <h4><b>{{product.name}}</b></h4>
+                <p>{{product.price}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}"
+               class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+    <br>
+</div>
+
+{% endblock %}
